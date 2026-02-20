@@ -92,3 +92,51 @@ async def test(dut):
   dut.a.value = 12 #Directly use value method
   await Timer(10, units="ns") #to generate 10 ns delay
 
+# Direct Assign
+async def test(dut):
+  dut.a = 12 #Direct assignment
+  await Timer(10, units="ns") #to generate 10 ns delay
+
+
+# ************ Section 3: Stimuli for Reset ************
+
+# Fixed duration stimuli
+async def test(dut):
+  rst = dut.rst
+  rst.value = 1
+  await Timer(50, 'ns')
+  rst.value = 0
+  await Timer(50, 'ns')
+
+
+# Note: Even If there is not $finish in DUT, The simulation will end after generation of stimuli as per TB
+
+# Accessing internal signals
+
+async def test(dut):
+  print(dir()) #prints instance name used by python to access the design
+  print(dir(dut)) #prints internal signal names used by python
+
+
+# Reset based on edge of other signal
+from cocotb.triggers import RisingEdge, FallingEdge, Edge
+
+async def test(dut):
+  rst = dut.rst
+  rst.value = 1
+  await RisingEdge(dut.clk) #we need access of signal, not value hence not using .value
+  await RisingEdge(dut.clk) 
+  rst.value = 0
+  await RisingEdge(dut.clk) 
+  await RisingEdge(dut.clk) 
+
+
+from cocotb.triggers import ClockCycles
+
+async def test(dut):
+  rst = dut.rst
+  rst.value = 1
+  await ClockCycles(dut.clk, 5, True) #5 clk posedges
+  rst.value = 0
+  await ClockCycles(dut.clk, 5, False) #5 clk negedges
+
