@@ -140,3 +140,5 @@ async def test(dut):
   rst.value = 0
   await ClockCycles(dut.clk, 5, False) #5 clk negedges
 
+
+# ************ Section 4: Stimuli for Clock ************
