@@ -142,3 +142,60 @@ async def test(dut):
 
 
 # ************ Section 4: Stimuli for Clock ************
+# terminology
+'''
+Ton, Toff, Time Period, Clk Freq, Duty Cycle
+
+'''
+
+# clk with 50% duty cycle , period = 20 ns
+async def clk1 (dut):
+  ton = 10
+  toff = 10
+  while True:
+    dut.clk1.value = 1
+    await Timer (ton, 'ns')
+    dut.clk1.value = 0
+    await Timer (toff, 'ns')
+
+async def clk2 (dut):
+  ton = 15
+  toff = 5
+  while True:
+    dut.clk1.value = 1
+    await Timer (ton, 'ns')
+    dut.clk1.value = 0
+    await Timer (toff, 'ns')
+
+# built in function
+from cocotb.clock import Clock
+async def test(dut):
+  cocotb.start_soon(Clock(dut.clk,10, 'ns').start())
+  await Timer(100,'ns')
+
+
+# Sync and Async functions
+
+# async
+async def function_name():
+  print("async funtion")
+
+# sync
+def function_name():
+  print("sync funtion")
+
+def add_stim():
+  print("")
+
+def test_add():
+  print("")
+
+async def test(dut):
+  # to execute in paralles, use start_soon
+  cocotb.start_soon(clk1(dut))
+  cocotb.start_soon(clk2(dut))
+
+  add_stim()
+  await Timer(10, 'ns')
+  test_add()
+

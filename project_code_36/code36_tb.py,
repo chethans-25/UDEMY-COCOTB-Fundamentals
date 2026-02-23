@@ -1,0 +1,14 @@
+import cocotb
+import logging
+import random
+ 
+from cocotb.triggers import Timer
+from cocotb.utils import get_sim_time
+from cocotb.clock import Clock
+ 
+#phase shift and asymmetric duty cycles
+@cocotb.test()
+async def test(dut):
+      cocotb.start_soon(Clock(dut.clk,10, 'ns').start())
+      
+      await Timer(100,'ns') 

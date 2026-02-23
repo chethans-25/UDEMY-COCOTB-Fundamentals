@@ -1,0 +1,9 @@
+module top(input clk);
+  
+initial begin
+$dumpfile("dump.vcd");
+$dumpvars(1,top);
+end
+ 
+ 
+endmodule
